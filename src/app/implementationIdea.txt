@@ -1,0 +1,74 @@
+import React, { useState } from "react";
+
+export default function Categories() {
+    // Board status (28 fields for 4 weeks)
+    const [board, setBoard] = useState(Array(28).fill(0)); // 0 = default, 1 = green
+
+    // Category dots (3 categories, each has 28 dots corresponding to days)
+    const [categories, setCategories] = useState({
+        read: Array(28).fill(0),
+        workout: Array(28).fill(0),
+        walk: Array(28).fill(0),
+    });
+
+    // Toggle the board and update category dots
+    const toggleStatus = (dayIndex, category) => {
+        const newBoard = [...board];
+        const newCategories = { ...categories };
+
+        // Toggle the board field's status (0 -> 1 -> 0)
+        newBoard[dayIndex] = newBoard[dayIndex] === 1 ? 0 : 1;
+
+        // Update the corresponding dot in the selected category
+        newCategories[category][dayIndex] = newBoard[dayIndex];
+
+        setBoard(newBoard);
+        setCategories(newCategories);
+    };
+
+    const habits = [
+        { title: "read", category: "read" },
+        { title: "workout", category: "workout" },
+        { title: "walk", category: "walk" },
+    ];
+
+    return (
+        <div className="flex flex-col items-center">
+            {/* Big Board */}
+            <div className="grid grid-cols-7 gap-2 mt-6">
+                {board.map((status, index) => (
+                    <div
+                        key={index}
+                        onClick={() => toggleStatus(index, "read")} // Example: always updates "read" for now
+                        className={`w-10 h-10 cursor-pointer rounded ${
+                            status === 1 ? "bg-green-500" : "bg-gray-800"
+                        }`}
+                    >
+                        {index + 1}
+                    </div>
+                ))}
+            </div>
+
+            {/* Category Dots */}
+            <div className="flex space-x-4 mt-10">
+                {habits.map((habit) => (
+                    <div key={habit.category}>
+                        <div className="flex items-center mb-2">
+                            <span className="text-sm">{habit.title}</span>
+                        </div>
+                        <div className="grid grid-cols-7 gap-1">
+                            {categories[habit.category].map((status, index) => (
+                                <div
+                                    key={index}
+                                    className={`w-3.5 h-3.5 rounded-full ${
+                                        status === 1 ? "bg-green-500" : "bg-gray-800"
+                                    }`}
+                                ></div>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
