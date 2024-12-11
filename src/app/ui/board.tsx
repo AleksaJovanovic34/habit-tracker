@@ -11,22 +11,32 @@ const initialState = (): Record<string, FieldStatus[]> =>
     }, {} as Record<string, FieldStatus[]>);
 
 const loadState = (): Record<string, FieldStatus[]> => {
-    const savedState = localStorage.getItem("habitTrackerState");
-    if (savedState) {
-        return JSON.parse(savedState);
+    if (typeof window !== 'undefined') {
+        const savedState = localStorage.getItem('habitTrackerState');
+        if (savedState) {
+            return JSON.parse(savedState);
+        }
     }
     return initialState();
 };
 
 const loadSelectedCategory = (): string => {
-    const savedCategory = localStorage.getItem("selectedCategory");
-    return savedCategory || habits[0].title;
+    if (typeof window !== "undefined") {
+        const savedCategory = localStorage.getItem("selectedCategory");
+        return savedCategory || habits[0].title;
+    }
+    return habits[0].title;
 };
 
 const Board: React.FC = () => {
     const [isHydrated, setIsHydrated] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState<string>(loadSelectedCategory);
-    const [categoryFieldStatus, setCategoryFieldStatus] = useState<Record<string, FieldStatus[]>>(loadState);
+    const [selectedCategory, setSelectedCategory] = useState<string>(habits[0].title);
+    const [categoryFieldStatus, setCategoryFieldStatus] = useState<Record<string, FieldStatus[]>>(
+        () => habits.reduce((acc, habit) => {
+            acc[habit.title] = Array(28).fill(0);
+            return acc;
+        }, {} as Record<string, FieldStatus[]>)
+    );
 
     useEffect(() => {
         setIsHydrated(true);
