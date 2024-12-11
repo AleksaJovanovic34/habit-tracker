@@ -1,4 +1,3 @@
-"use client"
 import React, { useEffect, useState } from "react";
 import Categories, { habits } from "./categories";
 
@@ -61,19 +60,10 @@ const Board: React.FC = () => {
         setSelectedCategory(category);
     };
 
-    const updateFieldStatus = (index: number, status: FieldStatus): void => {
-        const updatedStatus = [...categoryFieldStatus[selectedCategory]];
-        updatedStatus[index] = status;
-        setCategoryFieldStatus({ ...categoryFieldStatus, [selectedCategory]: updatedStatus });
-    }
-
-    const handleAllClicks = (index: number, event: React.MouseEvent<HTMLDivElement>) => {
-        if (event.altKey) updateFieldStatus(index, 2);
-        else {
-            if (event.detail === 1) updateFieldStatus(index, 1);
-            else if (event.detail === 2) updateFieldStatus(index, 2);
-            else if (event.detail === 3) updateFieldStatus(index, 0);
-        }
+    const handleClicks = (index: number): void => {
+       const updatedStatus = [...categoryFieldStatus[selectedCategory]];
+       updatedStatus[index] = ((updatedStatus[index] + 1) % 3) as FieldStatus;
+       setCategoryFieldStatus({ ...categoryFieldStatus, [selectedCategory]: updatedStatus });
     }
 
     const handleReset = () => {
@@ -97,10 +87,10 @@ const Board: React.FC = () => {
                 onReset={handleReset}/>
                 <div className="mt-4" style={{width: '938px'}}>
                     <div className="flex justify-center items-center">
-                        <div className="grid grid-cols-7 border-l border-t border-default-color">
+                        <div className="grid grid-cols-7 border-l border-t border-default-color cursor-pointer">
                             {categoryFieldStatus[selectedCategory]?.map((status, index) => (
                                 <div key={index}
-                                onClick={(e) => handleAllClicks(index, e)}
+                                onClick={() => handleClicks(index)}
                                 // onDoubleClick={() => handleDoubleClick(index)}
                                 className={`border-b border-default-color border-r text-xl flex justify-center items-center select-none
                                 ${status === 1 ?
@@ -116,7 +106,7 @@ const Board: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <div className="absolute bottom-2 right-2 text-gray-500">by {' '} 
+            <div className="absolute bottom-5 right-7 text-gray-500 select-none">by {' '} 
                 <a href="https://github.com/AleksaJovanovic34/habit-tracker" className="text-txt-color hover:text-white" target="_blank">
                 Aleksa</a>
             </div>

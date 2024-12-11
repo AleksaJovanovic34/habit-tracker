@@ -20,7 +20,7 @@ const Categories: React.FC<CategoriesProps> = ({fieldStatus, selectedCategory, o
         <>
         <div className='relative flex' style={{width: '938px'}}>
         <div className="inline-flex justify-start">
-            <div className="grid grid-cols-3 select-none">
+            <div className="grid grid-cols-3 select-none cursor-pointer">
                 {habits.map((habit) => (
                     <div key ={habit.title} 
                     onClick={() => onCategoryClick(habit.title)}
@@ -61,7 +61,7 @@ const Categories: React.FC<CategoriesProps> = ({fieldStatus, selectedCategory, o
             </div>  
         </div>
         <div className='absolute bottom-0 right-0'>
-            <p className='text-txt-color text-l hover:text-white cursor pointer select-none' 
+            <p className='text-txt-color text-l hover:text-white cursor-pointer select-none' 
             onClick={onReset}
             >reset to default</p>
         </div>
