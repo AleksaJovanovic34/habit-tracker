@@ -17,7 +17,8 @@ export default {
         'green-background': '#30A46C33',
         'green-txt': '#30A46C',
         'red-background': '#A430321A',
-        'red-txt': '#FF0004'
+        'red-txt': '#FF0004',
+        'selected-category-color': '#44444B'
       },
     },
   },
