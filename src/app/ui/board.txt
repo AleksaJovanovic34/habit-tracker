@@ -30,13 +30,12 @@ const loadSelectedCategory = (): string => {
 
 const Board: React.FC = () => {
     const [isHydrated, setIsHydrated] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState<string>(loadSelectedCategory());
+    const [selectedCategory, setSelectedCategory] = useState<string>(habits[0].title);
     const [categoryFieldStatus, setCategoryFieldStatus] = useState<Record<string, FieldStatus[]>>(
-        // () => habits.reduce((acc, habit) => {
-        //     acc[habit.title] = Array(28).fill(0);
-        //     return acc;
-        // }, {} as Record<string, FieldStatus[]>)
-        loadState()
+        () => habits.reduce((acc, habit) => {
+            acc[habit.title] = Array(28).fill(0);
+            return acc;
+        }, {} as Record<string, FieldStatus[]>)
     );
 
     useEffect(() => {
@@ -88,7 +87,7 @@ const Board: React.FC = () => {
 
     return (
         <>
-        <div className="relative flex flex-col justify-center items-center min-h-screen">
+        <div className="flex justify-center items-center min-h-screen">
             <div className="flex flex-col place-items-start gap-4">
                 <Categories 
                 fieldStatus={categoryFieldStatus}
@@ -115,10 +114,6 @@ const Board: React.FC = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="absolute bottom-2 right-2 text-gray-500">by {' '} 
-                <a href="https://github.com/AleksaJovanovic34/habit-tracker" className="text-txt-color hover:text-white" target="_blank">
-                Aleksa</a>
             </div>
         </div>
         </>

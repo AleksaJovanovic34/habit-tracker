@@ -10,6 +10,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <title>habit tracker</title>
+      </head>
       <body className={`${myFont.className} bg-black`}>
         {children}
       </body>
