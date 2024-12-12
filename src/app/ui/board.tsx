@@ -30,13 +30,7 @@ const loadSelectedCategory = (): string => {
 const Board: React.FC = () => {
     const [isHydrated, setIsHydrated] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState<string>(loadSelectedCategory());
-    const [categoryFieldStatus, setCategoryFieldStatus] = useState<Record<string, FieldStatus[]>>(
-        // () => habits.reduce((acc, habit) => {
-        //     acc[habit.title] = Array(28).fill(0);
-        //     return acc;
-        // }, {} as Record<string, FieldStatus[]>)
-        loadState()
-    );
+    const [categoryFieldStatus, setCategoryFieldStatus] = useState<Record<string, FieldStatus[]>>(loadState());
 
     useEffect(() => {
         setIsHydrated(true);
@@ -60,9 +54,12 @@ const Board: React.FC = () => {
         setSelectedCategory(category);
     };
 
-    const handleClicks = (index: number): void => {
+    const handleClicks = (index: number, event: React.MouseEvent<HTMLDivElement>): void => {
        const updatedStatus = [...categoryFieldStatus[selectedCategory]];
-       updatedStatus[index] = ((updatedStatus[index] + 1) % 3) as FieldStatus;
+
+       if(event.altKey) updatedStatus[index] = 2;
+       else updatedStatus[index] = ((updatedStatus[index] + 1) % 3) as FieldStatus;
+
        setCategoryFieldStatus({ ...categoryFieldStatus, [selectedCategory]: updatedStatus });
     }
 
@@ -78,8 +75,12 @@ const Board: React.FC = () => {
 
     return (
         <>
-        <div className="relative flex flex-col justify-center items-center min-h-screen">
+        <div className="relative flex flex-col justify-center items-center min-h-screen pb-5 pt-5">
             <div className="flex flex-col place-items-start gap-4">
+            <div className="w-full flex justify-start h-14 flex-col mb-5">
+                <h1 className="text-white text-3xl">minimalist habit tracker</h1>
+                <p className="text-txt-color">experience the power of compounding tasks</p>
+            </div>
                 <Categories 
                 fieldStatus={categoryFieldStatus}
                 selectedCategory={selectedCategory}
@@ -90,8 +91,7 @@ const Board: React.FC = () => {
                         <div className="grid grid-cols-7 border-l border-t border-default-color cursor-pointer">
                             {categoryFieldStatus[selectedCategory]?.map((status, index) => (
                                 <div key={index}
-                                onClick={() => handleClicks(index)}
-                                // onDoubleClick={() => handleDoubleClick(index)}
+                                onClick={(e) => handleClicks(index, e)}
                                 className={`border-b border-default-color border-r text-xl flex justify-center items-center select-none
                                 ${status === 1 ?
                                     'bg-green-background text-green-txt'
@@ -106,7 +106,7 @@ const Board: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <div className="absolute bottom-5 right-7 text-gray-500 select-none">by {' '} 
+            <div className="absolute bottom-5 right-5 text-gray-500 select-none">by {' '} 
                 <a href="https://github.com/AleksaJovanovic34/habit-tracker" className="text-txt-color hover:text-white" target="_blank">
                 Aleksa</a>
             </div>

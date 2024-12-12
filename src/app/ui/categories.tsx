@@ -18,7 +18,7 @@ const Categories: React.FC<CategoriesProps> = ({fieldStatus, selectedCategory, o
     
     return (
         <>
-        <div className='relative flex' style={{width: '938px'}}>
+        <div className='relative' style={{width: '938px'}}>
         <div className="inline-flex justify-start">
             <div className="grid grid-cols-3 select-none cursor-pointer">
                 {habits.map((habit) => (
